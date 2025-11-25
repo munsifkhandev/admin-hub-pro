@@ -10,6 +10,7 @@ import Branches from "./pages/Branches";
 import Products from "./pages/Products";
 import Suppliers from "./pages/Suppliers";
 import Purchases from "./pages/Purchases";
+import Transfers from "./pages/Transfers";
 import Inventory from "./pages/Inventory";
 import NotFound from "./pages/NotFound";
 
@@ -29,6 +30,7 @@ const App = () => (
             <Route path="/products" element={<Products />} />
             <Route path="/suppliers" element={<Suppliers />} />
             <Route path="/purchases" element={<Purchases />} />
+            <Route path="/transfers" element={<Transfers />} />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

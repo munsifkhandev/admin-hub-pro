@@ -1,4 +1,4 @@
-import { Building2, GitBranch, Package, Truck, ShoppingCart, BarChart3, LayoutDashboard } from "lucide-react";
+import { Building2, GitBranch, Package, Truck, ShoppingCart, BarChart3, LayoutDashboard, ArrowLeftRight } from "lucide-react";
 import { NavLink } from "@/components/NavLink";
 import {
   Sidebar,
@@ -19,6 +19,7 @@ const menuItems = [
   { title: "Products", url: "/products", icon: Package },
   { title: "Suppliers", url: "/suppliers", icon: Truck },
   { title: "Purchases", url: "/purchases", icon: ShoppingCart },
+  { title: "Transfers", url: "/transfers", icon: ArrowLeftRight },
   { title: "Inventory", url: "/inventory", icon: BarChart3 },
 ];
 

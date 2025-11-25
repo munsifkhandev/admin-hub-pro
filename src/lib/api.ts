@@ -54,3 +54,12 @@ export const inventoryApi = {
   getAll: () => api.get('/inventory'),
   getById: (id: string) => api.get(`/inventory/${id}`),
 };
+
+export const transferApi = {
+  getAll: () => api.get('/transfer'),
+  getById: (id: string) => api.get(`/transfer/${id}`),
+  create: (data: any) => api.post('/transfer', data),
+  update: (id: string, data: any) => api.put(`/transfer/${id}`, data),
+  updateStatus: (id: string, status: string) => api.patch(`/transfer/${id}/status`, { status }),
+  delete: (id: string) => api.delete(`/transfer/${id}`),
+};
