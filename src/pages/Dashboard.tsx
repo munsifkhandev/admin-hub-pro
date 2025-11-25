@@ -1,8 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
-import { Building2, GitBranch, Package, Truck, AlertTriangle, ShoppingCart } from "lucide-react";
+import { Building2, GitBranch, Package, Truck, AlertTriangle, ShoppingCart, ArrowLeftRight } from "lucide-react";
 import { StatCard } from "@/components/ui/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { organizationApi, branchApi, productApi, supplierApi, purchaseApi } from "@/lib/api";
+import { Badge } from "@/components/ui/badge";
+import { organizationApi, branchApi, productApi, supplierApi, purchaseApi, transferApi } from "@/lib/api";
 
 export default function Dashboard() {
   const { data: organizations } = useQuery({
@@ -30,6 +31,11 @@ export default function Dashboard() {
     queryFn: () => purchaseApi.getAll(),
   });
 
+  const { data: transfers } = useQuery({
+    queryKey: ["transfers"],
+    queryFn: () => transferApi.getAll(),
+  });
+
   const stats = [
     {
       title: "Organizations",
@@ -55,6 +61,7 @@ export default function Dashboard() {
 
   const lowStockProducts = products?.data?.filter((p: any) => p.stockQuantity < 10) || [];
   const recentPurchases = purchases?.data?.slice(0, 5) || [];
+  const pendingTransfers = transfers?.data?.filter((t: any) => t.status === "PENDING" || t.status === "IN_TRANSIT") || [];
 
   return (
     <div className="space-y-6">
@@ -69,7 +76,7 @@ export default function Dashboard() {
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -117,6 +124,36 @@ export default function Dashboard() {
                       </p>
                     </div>
                     <span className="text-foreground font-semibold">${purchase.totalAmount}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ArrowLeftRight className="h-5 w-5 text-warning" />
+              Pending Transfers
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            {pendingTransfers.length === 0 ? (
+              <p className="text-muted-foreground text-sm">No pending transfers</p>
+            ) : (
+              <div className="space-y-3">
+                {pendingTransfers.slice(0, 5).map((transfer: any) => (
+                  <div key={transfer.id} className="flex items-center justify-between p-3 bg-secondary rounded-lg">
+                    <div>
+                      <p className="font-medium text-foreground">Transfer #{transfer.id?.slice(0, 8)}</p>
+                      <p className="text-sm text-muted-foreground">
+                        {transfer.items?.length || 0} items
+                      </p>
+                    </div>
+                    <Badge variant={transfer.status === "PENDING" ? "secondary" : "default"}>
+                      {transfer.status}
+                    </Badge>
                   </div>
                 ))}
               </div>
